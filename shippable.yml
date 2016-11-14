@@ -1,22 +1,35 @@
 # language setting
 language: node_js
 
-# version numbers, testing against one version of node
+# version numbers, testing against two versions of node
 node_js:
-    - 0.10.33
+  - 0.10.33
 
 env:
-    - XUNIT_FILE=./shippable/testresults/result.xml API_PORT=3001
+  - XUNIT_FILE=./shippable/testresults/result.xml API_PORT=3001
 
-before_install:
+build:
+  ci:
     - node --version
-    - mkdir -p ./shippable/testresults
-    - mkdir -p ./shippable/codecoverage
-
-script:
+    - mkdir -p ./shippable/testresults ./shippable/codecoverage ./shippable/buildoutput
+    - echo $BUILD_NUMBER > ~/buildConfig.txt
+    - npm install
     - grunt
-
-after_script:
+  post_ci:
     - ./node_modules/.bin/istanbul cover grunt -- -u tdd
     - ./node_modules/.bin/istanbul report cobertura --dir  ./shippable/codecoverage/
-    - echo $BUILD_NUMBER > ~/buildConfig.txt
+    - docker build -t avinci/micro-api:$BRANCH.$BUILD_NUMBER .
+  push:
+    - docker push avinci/micro-api:$BRANCH.$BUILD_NUMBER
+
+branches:
+  only:
+    - master
+
+integrations:
+  hub:
+    - integrationName: avinci-dh
+      type: docker
+      branches:
+        only:
+          - master
