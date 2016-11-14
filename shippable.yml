@@ -35,7 +35,7 @@ integrations:
           - master
 
   notifications:
-    - integrationName: micro-api-img
+    - integrationName: api-img
       type: webhook
       payload:
         - versionName=$BRANCH.$BUILD_NUMBER
