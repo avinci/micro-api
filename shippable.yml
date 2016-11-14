@@ -33,3 +33,12 @@ integrations:
       branches:
         only:
           - master
+
+  notifications:
+    - integrationName: micro-api-img
+      type: webhook
+      payload:
+        - versionName=$BRANCH.$BUILD_NUMBER
+      on_success: always
+      on_failure: never
+      on_start: never
