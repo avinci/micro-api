@@ -12,7 +12,7 @@ function info(req, res) {
         console.log(err);
       if (data) buildnum = data.replace('\n', '');
       res.status(200).json({
-        time: new Date(),
+        //time: new Date(),
         buildnumber: buildnum,
         message: 'Docker based API micro service',
         body: req.body,
