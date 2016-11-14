@@ -6,7 +6,7 @@ var fs = require('fs');
 function info(req, res) {
   var buildnum = 'unavailable';
   logger.info('Info page');
-  fs.readFile('./shippable/buildoutput/config.txt', 'utf8',
+  fs.readFile('./shippable/buildoutput/buildConfig.txt', 'utf8',
     function (err, data) {
       if (err)
         console.log(err);
