@@ -12,12 +12,12 @@ build:
   ci:
     - node --version
     - mkdir -p ./shippable/testresults ./shippable/codecoverage ./shippable/buildoutput
+    - echo $BUILD_NUMBER > ./shippable/buildoutput/buildConfig.txt
     - npm install
     - grunt
   post_ci:
     - ./node_modules/.bin/istanbul cover grunt -- -u tdd
     - ./node_modules/.bin/istanbul report cobertura --dir  ./shippable/codecoverage/
-    - echo $BUILD_NUMBER > ./shippable/buildoutput/buildConfig.txt
     - docker build -t avinci/micro-api:$BRANCH.$BUILD_NUMBER .
   push:
     - docker push avinci/micro-api:$BRANCH.$BUILD_NUMBER
